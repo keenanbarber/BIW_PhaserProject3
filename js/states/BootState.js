@@ -16,6 +16,18 @@ MyGame.prototype.constructor = MyGame.BootState;
 MyGame.BootState.prototype.init = function(game_details) {
 	"use strict";
 	this.game_details = game_details;
+
+
+	//Test for scaling?
+	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+	if (game.device.desktop) {  
+		game.scale.maxWidth = 640;  
+		game.scale.maxHeight = 790;  
+	}
+	else {  
+		game.scale.maxWidth = 1080;  
+		game.scale.maxHeight = 1920;
+	}
 };
 
 MyGame.BootState.prototype.preload = function() {
