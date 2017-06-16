@@ -1,0 +1,19 @@
+body,
+html,
+div.board,
+
+div#game_container {
+  background-color: silver;
+  width: 675px;
+  height: 200px;
+
+  box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .4);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+
