@@ -17,13 +17,6 @@ MyGame.BootState.prototype.init = function(game_details) {
 	"use strict";
 	this.game_details = game_details;
 
-	//game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
-
-        //game.scale.forceLandscape = true;
-        //game.scale.setScreenSize(true);
-
-	//Test for scaling?
 	
 	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
@@ -37,8 +30,6 @@ MyGame.BootState.prototype.init = function(game_details) {
 	}
 	else {  
 		console.log("This is running on a mobile device. 1");
-		// game.scale.maxWidth = 1080;  
-		// game.scale.maxHeight = 1920;
 		device = "MOBILE";
 	}
 
@@ -48,7 +39,7 @@ MyGame.BootState.prototype.init = function(game_details) {
 	
 	game.scale.refresh();
 
-	// Determiines if mobile or desktop.
+	// Determines if mobile or desktop.
 	if (/Mobile|Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
 	    console.log("This is running on a mobile device. 2");
 	    device = "MOBILE";

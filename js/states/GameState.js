@@ -33,7 +33,7 @@ MyGame.GameState.prototype.onResize = function() { // TESTING
 	else {
 		deviceOrientation = "LANDSCAPE";
 	}
-	
+
 
 	console.log(deviceOrientation);
 	game.scale.refresh();
@@ -46,6 +46,8 @@ MyGame.GameState.prototype.create = function() {
 	// Add events to check for swipe
 	this.game.input.onDown.add(this.start_swipe, this);
 	this.game.input.onUp.add(this.end_swipe, this);
+
+	this.makeText("0100 ", { font: "40px Arial", fill: "#ffffff", align: "center" });
 };
 
 MyGame.GameState.prototype.start_swipe = function (pointer) {
@@ -104,7 +106,6 @@ MyGame.GameState.prototype.findDirectionOfSwipe = function(d) {
 		bestVector = currentVector;
 	}
 
-	console.log("Check");
 	currentVector = new Phaser.Point(0, 1); // Right
 	dist = d.distance(currentVector);
 	if(dist < bestDist) {
@@ -113,6 +114,7 @@ MyGame.GameState.prototype.findDirectionOfSwipe = function(d) {
 	}
 
 	console.log("Best Vector: " + bestVector);
+	return bestVector;
 };
 
 MyGame.GameState.prototype.handleAccelerometer = function(e) {
@@ -121,6 +123,30 @@ MyGame.GameState.prototype.handleAccelerometer = function(e) {
     var x = e.gamma;
     console.log("Orientation: x=" + x + ", y=" + y + ", z=" + z);
 };
+
+MyGame.GameState.prototype.makeText = function(t, style) {
+	let text = game.add.text(game.world.centerX, game.world.centerY, t, style);
+    text.anchor.set(0.5);
+    this.colorText(text, 1, 4, "#ffff00", "#ffffff")
+    return text;
+};
+
+MyGame.GameState.prototype.colorText = function(t, x1, x2, newColor, originalColor) {
+	t.addColor(newColor, x1);
+    t.addColor(originalColor, x2);
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
