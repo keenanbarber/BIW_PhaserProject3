@@ -18,6 +18,7 @@ MyGame.LoadingState.prototype.init = function(game_details_data) {
 
 MyGame.LoadingState.prototype.preload = function() {
 	"use strict"; 
+
 	var user_details, user_detail_key, detail;
 	user_details = this.game_details_data.user_details;
 	for(user_detail_key in user_details) {
@@ -27,15 +28,17 @@ MyGame.LoadingState.prototype.preload = function() {
 			switch(user_detail_key) {
 				case "name": 
 					//this.load.image(asset_key, asset.source);
-					console.log("The program found \'" + detail + "\' in the json file.");
+					console.log("Found \'" + detail + "\' in the json file.");
 					break; 
 				case "points": 
 					//this.load.spritesheet(asset_key, asset_source, asset.frame_width, asset.frame_height, asset.frames, asset.margin, asset.spacing);
-					console.log("The program found \'" + detail + "\' in the json file.");
+					console.log("Found \'" + detail + "\' in the json file.");
 					break;
 			}
 		}
 	}
+
+
 };
 
 MyGame.LoadingState.prototype.create = function() {

@@ -4,11 +4,11 @@
 	}, 
 	"game_details": {
 		"screen_width": 600, 
-		"screen_height": 400
+		"screen_height": 400 
 	},
 	"user_details": {
 		"name": "Keenan", 
-		"points": 10
+		"points": 1000
 	},
 	"prefabs": {
 
