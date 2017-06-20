@@ -2,6 +2,14 @@
 
 var MyGame = MyGame || {}; // Creates namespace if haven't already. 
 
+var playerDirection = "RIGHT";
+var player;
+var colliding = false;
+var BOTTOM_BOUND = 300;
+var TOP_BOUND = 50;
+var LEFT_BOUND = 50;
+var RIGHT_BOUND = 400;
+
 MyGame.GameState = function() {
 	"use strict"; 
 	Phaser.State.call(this);
@@ -47,7 +55,108 @@ MyGame.GameState.prototype.create = function() {
 	this.game.input.onDown.add(this.start_swipe, this);
 	this.game.input.onUp.add(this.end_swipe, this);
 
-	this.makeText("0100 ", { font: "40px Arial", fill: "#ffffff", align: "center" });
+	player = this.makeText("0 ", { font: "40px Arial", fill: "#ffffff", align: "center" });
+};
+
+MyGame.GameState.prototype.update = function() {
+	"use strict"; 
+
+	console.log("Update");
+	
+
+	this.updatePlayer();
+};
+
+MyGame.GameState.prototype.updatePlayer = function() {
+	let amount = 2;
+	if(!colliding) {
+		amount = amount*3;
+	}
+	if(playerDirection === "RIGHT") {
+		player.x += amount;
+		if(player.x >= RIGHT_BOUND && player.y >= BOTTOM_BOUND) {
+			playerDirection = "UP";
+			player.x = RIGHT_BOUND;
+			player.y = BOTTOM_BOUND;
+		}
+		else if(player.x >= RIGHT_BOUND && player.y <= TOP_BOUND) {
+			playerDirection = "DOWN";
+			player.x = RIGHT_BOUND;
+			player.y = TOP_BOUND;
+		}
+		else if(player.x <= LEFT_BOUND) {
+			playerDirection = "DOWN"; 
+			player.x = LEFT_BOUND;
+		}
+		else if(player.x >= RIGHT_BOUND) {
+			playerDirection = "UP"; 
+			player.x = RIGHT_BOUND;
+		}
+	}
+	else if(playerDirection === "LEFT") {
+		player.x -= amount;
+		if(player.x <= LEFT_BOUND && player.y >= BOTTOM_BOUND) {
+			playerDirection = "UP";
+			player.x = LEFT_BOUND;
+			player.y = BOTTOM_BOUND;
+		}
+		else if(player.x <= LEFT_BOUND && player.y <= TOP_BOUND) {
+			playerDirection = "DOWN";
+			player.x = LEFT_BOUND;
+			player.y = TOP_BOUND;
+		}
+		else if(player.x <= LEFT_BOUND) {
+			playerDirection = "DOWN"; 
+			player.x = LEFT_BOUND;
+		}
+		else if(player.x >= RIGHT_BOUND) {
+			playerDirection = "UP"; 
+			player.x = RIGHT_BOUND;
+		}
+	}
+	else if(playerDirection === "UP") {
+		player.y -= amount;
+		if(player.y <= TOP_BOUND && player.x >= RIGHT_BOUND) {
+			playerDirection = "LEFT";
+			player.x = RIGHT_BOUND;
+			player.y = TOP_BOUND;
+		}
+		else if(player.y <= TOP_BOUND && player.x <= LEFT_BOUND) {
+			playerDirection = "RIGHT";
+			player.x = LEFT_BOUND;
+			player.y = TOP_BOUND;
+		}
+		else if(player.y <= TOP_BOUND) {
+			playerDirection = "RIGHT"; 
+			player.y = TOP_BOUND;
+		}
+		else if(player.y >= BOTTOM_BOUND) {
+			playerDirection = "LEFT"; 
+			player.y = BOTTOM_BOUND;
+		}
+	}
+	else if(playerDirection === "DOWN") {
+		player.y += amount;
+		if(player.y >= BOTTOM_BOUND && player.x >= RIGHT_BOUND) {
+			playerDirection = "LEFT";
+			player.x = RIGHT_BOUND;
+			player.y = BOTTOM_BOUND;
+		}
+		else if(player.y >= BOTTOM_BOUND && player.x <= LEFT_BOUND) {
+			playerDirection = "RIGHT";
+			player.x = LEFT_BOUND;
+			player.y = BOTTOM_BOUND;
+		}
+		else if(player.y <= TOP_BOUND) {
+			playerDirection = "RIGHT"; 
+			player.y = TOP_BOUND;
+		}
+		else if(player.y >= BOTTOM_BOUND) {
+			playerDirection = "LEFT";
+			player.y = BOTTOM_BOUND; 
+		}
+	}
+	colliding = this.playerCheckCollisions();
 };
 
 MyGame.GameState.prototype.start_swipe = function (pointer) {
@@ -70,7 +179,7 @@ MyGame.GameState.prototype.end_swipe = function (pointer) {
 	    if (swipe_length >= this.MINIMUM_SWIPE_LENGTH) {
 	        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 		    
-		    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
+		    this.setPlayerDirection(this.findDirectionOfSwipe(calculatedSwipeDirectionVector));
 	    }
 	    console.log("Press up.");
 
@@ -78,6 +187,29 @@ MyGame.GameState.prototype.end_swipe = function (pointer) {
 
     this.end_swipe_point = null;
     this.start_swipe_point = null;
+};
+
+MyGame.GameState.prototype.playerCheckCollisions = function() {
+	if(player.y <= TOP_BOUND || player.y >= BOTTOM_BOUND || player.x <= LEFT_BOUND || player.x >= RIGHT_BOUND) {
+		return true;
+	}
+};
+
+MyGame.GameState.prototype.setPlayerDirection = function(d) {
+	if(colliding) {
+		if(d.x == 1 && player.x < RIGHT_BOUND) {
+			playerDirection = "RIGHT";
+		}
+		else if(d.x == -1 && player.x > LEFT_BOUND) {
+			playerDirection = "LEFT";
+		}
+		else if(d.y == 1 && player.y < BOTTOM_BOUND) {
+			playerDirection = "DOWN";
+		}
+		else if(d.y == -1 && player.y > TOP_BOUND) {
+			playerDirection = "UP";
+		}
+	}
 };
 
 MyGame.GameState.prototype.findDirectionOfSwipe = function(d) {
